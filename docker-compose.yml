@@ -1,0 +1,27 @@
+version: '2'
+
+### Services
+services:
+## MySQL Container
+    mysql-local:
+        image: mysql:latest
+        container_name: mysql-local
+        restart: always
+        ports:
+                - "3306:3306"
+        volumes:
+              - ./data/:/docker-entrypoint-initdb.d/
+              - ./conf.d/:/etc/mysql/conf.d/
+        environment:
+            MYSQL_DATABASE: db1
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: puser1
+            MYSQL_ROOT_PASSWORD: proot
+# Adminer container
+    adminer:
+            image: adminer
+            container_name: adminer
+            links:
+                - "mysql-local"
+            ports:
+                - "8080:8080"
